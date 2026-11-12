@@ -1,0 +1,32 @@
+
+# Build results
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Development settings (may contain secrets)
+appsettings.Development.json
+
+# Publish output
+publish/
+artifacts/
