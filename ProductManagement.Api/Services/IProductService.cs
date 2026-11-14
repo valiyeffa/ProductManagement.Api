@@ -5,13 +5,13 @@ namespace ProductManagement.Api.Services;
 
 public interface IProductService
 {
-    List<Product> GetAll();
+    Task<List<Product>> GetAllAsync();
 
-    Product? GetById(int id);
+    Task<Product?> GetByIdAsync(int id);
 
-    Product Create(CreateProductDto dto);
+    Task<Product> CreateAsync(CreateProductDto dto);
 
-    Product? Update(int id, UpdateProductDto dto);
+    Task<Product?> UpdateAsync(int id, UpdateProductDto dto);
 
-    bool Delete(int id);
+    Task<bool> DeleteAsync(int id);
 }

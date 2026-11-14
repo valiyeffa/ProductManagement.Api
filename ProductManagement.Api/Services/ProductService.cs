@@ -1,45 +1,44 @@
 using ProductManagement.Api.DTOs;
 using ProductManagement.Api.Models;
+using ProductManagement.Api.Repositories;
 
 namespace ProductManagement.Api.Services;
 
 public class ProductService : IProductService
 {
-    private readonly List<Product> _products = new()
-    {
-        new Product { Id = 1, Name = "Laptop", Price = 1500m },
-        new Product { Id = 2, Name = "Mouse", Price = 35m }
-    };
+    private readonly IProductRepository _productRepository;
 
-    public List<Product> GetAll()
+    public ProductService(IProductRepository productRepository)
     {
-        return _products; 
+        _productRepository = productRepository;
     }
 
-    public Product? GetById(int id)
+    public async Task<List<Product>> GetAllAsync()
     {
-        var product = _products.FirstOrDefault(p => p.Id == id);
-
-        return product;
+        return await _productRepository.GetAllAsync();
     }
 
-    public Product Create(CreateProductDto dto)
+    public async Task<Product?> GetByIdAsync(int id)
+    {
+        return await _productRepository.GetByIdAsync(id);
+    }
+
+    public async Task<Product> CreateAsync(CreateProductDto dto)
     {
         var product = new Product
         {
-            Id = _products.Max(p => p.Id) + 1,
             Name = dto.Name,
             Price = dto.Price
         };
 
-        _products.Add(product);
+        await _productRepository.AddAsync(product);
 
         return product;
     }
 
-    public Product? Update(int id, UpdateProductDto dto)
+    public async Task<Product?> UpdateAsync(int id, UpdateProductDto dto)
     {
-        var product = _products.FirstOrDefault(p => p.Id == id);
+        var product = await _productRepository.GetByIdAsync(id);
 
         if (product is null)
         {
@@ -49,20 +48,13 @@ public class ProductService : IProductService
         product.Name = dto.Name;
         product.Price = dto.Price;
 
+        await _productRepository.UpdateAsync(product);
+
         return product;
     }
 
-    public bool Delete(int id)
+    public async Task<bool> DeleteAsync(int id)
     {
-        var product = _products.FirstOrDefault(p => p.Id == id);
-
-        if (product is null)
-        {
-            return false;
-        }
-
-        _products.Remove(product);
-
-        return true;
+        return await _productRepository.DeleteAsync(id);
     }
 }

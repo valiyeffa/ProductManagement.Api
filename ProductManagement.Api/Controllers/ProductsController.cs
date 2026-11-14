@@ -16,17 +16,17 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var products = _productService.GetAll();
+        var products = await _productService.GetAllAsync();
 
         return Ok(products);
     }
 
     [HttpGet("{id:int}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var product = _productService.GetById(id);
+        var product = await _productService.GetByIdAsync(id);
 
         if (product is null)
         {
@@ -37,9 +37,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create(CreateProductDto dto)
+    public async Task<IActionResult> Create(CreateProductDto dto)
     {
-        var product = _productService.Create(dto);
+        var product = await _productService.CreateAsync(dto);
 
         return CreatedAtAction(
             nameof(GetById),
@@ -49,9 +49,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public IActionResult Update(int id, UpdateProductDto dto)
+    public async Task<IActionResult> Update(int id, UpdateProductDto dto)
     {
-        var product = _productService.Update(id, dto);
+        var product = await _productService.UpdateAsync(id, dto);
 
         if (product is null)
         {
@@ -62,9 +62,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        var isDeleted = _productService.Delete(id);
+        var isDeleted = await _productService.DeleteAsync(id);
 
         if (!isDeleted)
         {
